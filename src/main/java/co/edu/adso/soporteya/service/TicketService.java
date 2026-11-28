@@ -77,7 +77,7 @@ public class TicketService {
         }
 
         String asunto = datos.asunto().trim();
-        if (tickets.existBySolicitanteIdAndAsuntoIgnoreCaseAndEstadoIn(solicitante.getId(), asunto, EstadoTicket.pendientes())) {
+        if (tickets.existsBySolicitanteIdAndAsuntoIgnoreCaseAndEstadoIn(solicitante.getId(), asunto, EstadoTicket.pendientes())) {
             throw new NegocioException("asunto", "Ya tiene un ticket pendiente con ese asunto");
         }
         Ticket ticket = new Ticket(asunto, datos.descripcion().trim(), datos.prioridad(), solicitante, categoria);

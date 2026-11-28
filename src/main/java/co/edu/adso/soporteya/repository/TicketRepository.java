@@ -17,19 +17,19 @@ import co.edu.adso.soporteya.model.EstadoTicket;
 import co.edu.adso.soporteya.model.Ticket;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long>{
-    @EntityGraph (attributePaths = {"categoria", "tecnico", "solicitantes"})
+    @EntityGraph (attributePaths = {"categoria", "tecnico", "solicitante"})
     Page<Ticket> findBySolicitanteEmailOrderByFechaCreacionDesc(String email, Pageable pageable);
 
-    @EntityGraph (attributePaths = {"categoria", "tecnico", "solicitantes"})
+    @EntityGraph (attributePaths = {"categoria", "tecnico", "solicitante"})
     List<Ticket> findByEstadoInOrderByFechaLimiteAsc(Collection<EstadoTicket> estados);
 
-    boolean existBySolicitanteIdAndAsuntoIgnoreCaseAndEstadoIn(Long solicitanteId, String asunto, Collection<EstadoTicket> estados);
+    boolean existsBySolicitanteIdAndAsuntoIgnoreCaseAndEstadoIn(Long solicitanteId, String asunto, Collection<EstadoTicket> estados);
 
     long countBySolicitanteEmailAndEstadoIn(String email, Collection<EstadoTicket> estados);
 
     // Proyección: cuántos tickets hay en cada estado
     @Query("""
-            select new co.edu.sena.adso.soporteya.dto.ConteoEstadoDTO(t.estado, count(t))
+            select new co.edu.adso.soporteya.dto.ConteoEstadoDTO(t.estado, count(t))
             from Ticket t
             group by t.estado
             order by t.estado
@@ -38,7 +38,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>{
 
     // Indicadores por técnico: resueltos y cuántos se resolvieron después de la fecha límite
     @Query("""
-            select new co.edu.sena.adso.soporteya.dto.IndicadorTecnicoDTO(
+            select new co.edu.adso.soporteya.dto.IndicadorTecnicoDTO(
                 u.nombreCompleto,
                 count(t),
                 sum(case when t.fechaResolucion > t.fechaLimite then 1 else 0 end))

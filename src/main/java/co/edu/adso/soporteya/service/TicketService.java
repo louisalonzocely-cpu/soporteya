@@ -80,12 +80,7 @@ public class TicketService {
         if (tickets.existBySolicitanteIdAndAsuntoIgnoreCaseAndEstadoIn(solicitante.getId(), asunto, EstadoTicket.pendientes())) {
             throw new NegocioException("asunto", "Ya tiene un ticket pendiente con ese asunto");
         }
-        Ticket ticket = new Ticket();
-        ticket.setAsunto(asunto);
-        ticket.setDescripcion(datos.descripcion().trim());
-        ticket.setPrioridad(datos.prioridad());
-        ticket.setSolicitante(solicitante);
-        ticket.setCategoria(categoria);
+        Ticket ticket = new Ticket(asunto, datos.descripcion().trim(), datos.prioridad(), solicitante, categoria);
         return TicketResumenDTO.from(tickets.save(ticket));
     }
 

@@ -50,6 +50,13 @@ public class Usuario {
                 inverseJoinColumns = @JoinColumn (name = "categoria_id"))
     private  Set<Categoria> especialidades = new HashSet<>();
 
+    public Usuario(String nombreCompleto, String email, Rol rol, Area area) {
+        this.nombreCompleto = nombreCompleto;
+        this.email = email;
+        this.rol = rol;
+        this.area = area;
+    }
+
     public boolean atiende(Categoria categoria) {
         return especialidades.stream().anyMatch(c -> c.getId().equals(categoria.getId()));
     }

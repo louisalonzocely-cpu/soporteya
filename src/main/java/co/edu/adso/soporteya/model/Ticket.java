@@ -75,6 +75,15 @@ public class Ticket {
     @Version
     private Long version;
 
+    public Ticket(String asunto, String descripcion, Prioridad prioridad, Usuario solicitante, Categoria categoria) {
+        this.asunto = asunto;
+        this.descripcion = descripcion;
+        this.prioridad = prioridad;
+        this.solicitante = solicitante;
+        this.categoria = categoria;
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaLimite = this.fechaCreacion.plusHours(prioridad.getHorasLimite());
+    }
 
     // Código para mostrar al usuario: SY-00042
     public String getCodigo() {
@@ -99,6 +108,7 @@ public class Ticket {
         }
         Comentario comentario = new Comentario();
         comentario.setTexto(texto);
+        comentario.setFecha(LocalDateTime.now());
         comentario.setAutor(autor);
         comentario.setInterno(false);
         agregarComentario(comentario);
